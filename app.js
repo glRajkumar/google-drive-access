@@ -1,11 +1,7 @@
 const express = require('express')
 const fs = require('fs')
-const { google } = require('googleapis')
-require('dotenv').config()
 
-const CLINT_ID = process.env.CLINT_ID
-const CLINT_SECRECT = process.env.CLINT_SECRECT
-const REDIRECT_URI = process.env.REDIRECT_URI
+const getDrive = require('./getDrive')
 
 const app = express()
 app.use(express.json())
@@ -22,15 +18,7 @@ app.get('/auth', async (req, res) => {
 app.get('/files/:token', async (req, res) => {
   try {
     const { token } = req.params
-
-    const oauth2Client = new google.auth.OAuth2(CLINT_ID, CLINT_SECRECT, REDIRECT_URI)
-
-    oauth2Client.setCredentials({ access_token: token })
-
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client
-    })
+    const drive = getDrive(token)
 
     let { data } = await drive.files.list({
       q: "mimeType = 'application/vnd.google-apps.folder'"
@@ -48,14 +36,7 @@ app.post("/create-file/:token", async (req, res) => {
     const { token } = req.params
     const { folderId } = req.body
 
-    const oauth2Client = new google.auth.OAuth2(CLINT_ID, CLINT_SECRECT, REDIRECT_URI)
-
-    oauth2Client.setCredentials({ access_token: token })
-
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client
-    })
+    const drive = getDrive(token)
 
     let fileMetadata = {
       'name': 'img1.jpeg'
@@ -89,14 +70,7 @@ app.post("/create-folder/:token", async (req, res) => {
     const { token } = req.params
     const { folderName, folderId } = req.body
 
-    const oauth2Client = new google.auth.OAuth2(CLINT_ID, CLINT_SECRECT, REDIRECT_URI)
-
-    oauth2Client.setCredentials({ access_token: token })
-
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client
-    })
+    const drive = getDrive(token)
 
     let fileMetadata = {
       'name': folderName,

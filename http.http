@@ -1,6 +1,6 @@
 @host = http://localhost:3000
 
-@token = ya29.a0ARrdaM_BS_W2R9kmbvGm0c2p7qwqAgsMz-0WuB6XLmeUQQntNZk7jH7uJx_c-OO2wwgTaCx7B9X9DpIo58wtYqRRECMi1xaQdLzMV2Gx4CqrDLxW2_cPw3puC8rWWVjI1vWKRc145WWFoSADuxSv4kgsxvbX
+@token = 
 
 ### get
 GET {{host}}/files/{{token}}
